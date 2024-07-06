@@ -1,4 +1,5 @@
 import "./App.css";
+import GameBoard from "./components/gameboard";
 import Playerdetails from "./components/playerdetails";
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
             <Playerdetails name="Player 1" symbol="X"></Playerdetails>
             <Playerdetails name="Player 2" symbol="O"></Playerdetails>
           </ol>
-          Game Board
+          <GameBoard></GameBoard>
         </div>
         Log
       </main>
