@@ -4,20 +4,21 @@ import GameBoard from "./components/gameboard";
 import Playerdetails from "./components/playerdetails";
 import Log from "./components/log";
 
+function derivedActivePlayer(gameTurns) {
+  let currentPlayer = "X";
+  if (gameTurns.length && gameTurns[0].player === "X") {
+    currentPlayer = "O";
+  }
+  return currentPlayer;
+}
+
 function App() {
-  const [activePlayeSymbol, setActivePlayerSymbol] = useState("X");
   const [logManagement, setLogManagement] = useState([]);
+  const activePlayeSymbol = derivedActivePlayer(logManagement);
 
   function activePlayerHandler(rowIndex, colIndex) {
-    setActivePlayerSymbol((prevState) => {
-      return prevState === "X" ? "O" : "X";
-    });
-
     setLogManagement((prevState) => {
-      let currentPlayer = "X";
-      if (prevState.length && prevState[0].player === "X") {
-        currentPlayer = "O";
-      }
+      const currentPlayer = derivedActivePlayer(prevState);
       const updatedLogManagement = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...prevState,

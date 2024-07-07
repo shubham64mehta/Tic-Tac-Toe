@@ -26,6 +26,7 @@ const GameBoard = ({ playerHandler, management }) => {
                       onClick={() => {
                         playerHandler(rowIndex, colIndex);
                       }}
+                      disabled={column != null}
                     >
                       {column}
                     </button>
