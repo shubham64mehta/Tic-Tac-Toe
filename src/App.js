@@ -3,6 +3,14 @@ import "./App.css";
 import GameBoard from "./components/gameboard";
 import Playerdetails from "./components/playerdetails";
 import Log from "./components/log";
+import { WINNING_COMBINATIONS } from "./winningcombination";
+import Gameover from "./components/gamerover";
+
+const initialGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
 
 function derivedActivePlayer(gameTurns) {
   let currentPlayer = "X";
@@ -12,10 +20,31 @@ function derivedActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
+let winner = null;
+let hasDraw = false;
 function App() {
   const [logManagement, setLogManagement] = useState([]);
   const activePlayeSymbol = derivedActivePlayer(logManagement);
 
+  let gameBoard = [...initialGameBoard.map((innerArray) => [...innerArray])];
+  if (logManagement.length) {
+    for (const value of logManagement) {
+      const { square, player } = value;
+      const { row, col } = square;
+      gameBoard[row][col] = player;
+    }
+  }
+
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstValue = gameBoard[combination[0].row][combination[0].column];
+    const secondValue = gameBoard[combination[1].row][combination[1].column];
+    const thirdValue = gameBoard[combination[2].row][combination[2].column];
+    if (firstValue && firstValue === secondValue && firstValue === thirdValue) {
+      winner = firstValue;
+    }
+  }
+
+  hasDraw = logManagement.length === 9 && !winner;
   function activePlayerHandler(rowIndex, colIndex) {
     setLogManagement((prevState) => {
       const currentPlayer = derivedActivePlayer(prevState);
@@ -25,6 +54,11 @@ function App() {
       ];
       return updatedLogManagement;
     });
+  }
+
+  function handleRestart() {
+    setLogManagement([]);
+    winner = null;
   }
   return (
     <>
@@ -42,9 +76,12 @@ function App() {
               isActive={activePlayeSymbol === "O"}
             ></Playerdetails>
           </ol>
+          {(winner || hasDraw) && (
+            <Gameover winner={winner} restart={handleRestart}></Gameover>
+          )}
           <GameBoard
             playerHandler={activePlayerHandler}
-            management={logManagement}
+            management={gameBoard}
           ></GameBoard>
         </div>
         <Log turns={logManagement}></Log>

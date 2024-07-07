@@ -1,21 +1,7 @@
-const initialGameBoard = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
-
 const GameBoard = ({ playerHandler, management }) => {
-  let gameBoard = initialGameBoard;
-  if (management.length) {
-    for (const value of management) {
-      const { square, player } = value;
-      const { row, col } = square;
-      gameBoard[row][col] = player;
-    }
-  }
   return (
     <ol id="game-board">
-      {gameBoard.map((row, rowIndex) => {
+      {management.map((row, rowIndex) => {
         return (
           <li key={rowIndex}>
             <ol>
