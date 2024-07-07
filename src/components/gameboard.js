@@ -6,7 +6,7 @@ const initialGameBoard = [
   [null, null, null],
 ];
 
-const GameBoard = () => {
+const GameBoard = ({ playerHandler, activeSymbol }) => {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
   function selectHandler(rowIndex, colIndex) {
@@ -16,9 +16,10 @@ const GameBoard = () => {
           return [...innerValue];
         }),
       ];
-      updateStateBoard[rowIndex][colIndex] = "X";
+      updateStateBoard[rowIndex][colIndex] = activeSymbol;
       return updateStateBoard;
     });
+    playerHandler();
   }
   return (
     <ol id="game-board">
