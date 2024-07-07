@@ -1,25 +1,17 @@
-import { useState } from "react";
-
 const initialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-const GameBoard = ({ playerHandler, activeSymbol }) => {
-  const [gameBoard, setGameBoard] = useState(initialGameBoard);
-
-  function selectHandler(rowIndex, colIndex) {
-    setGameBoard((prevState) => {
-      const updateStateBoard = [
-        ...prevState.map((innerValue) => {
-          return [...innerValue];
-        }),
-      ];
-      updateStateBoard[rowIndex][colIndex] = activeSymbol;
-      return updateStateBoard;
-    });
-    playerHandler();
+const GameBoard = ({ playerHandler, management }) => {
+  let gameBoard = initialGameBoard;
+  if (management.length) {
+    for (const value of management) {
+      const { square, player } = value;
+      const { row, col } = square;
+      gameBoard[row][col] = player;
+    }
   }
   return (
     <ol id="game-board">
@@ -32,7 +24,7 @@ const GameBoard = ({ playerHandler, activeSymbol }) => {
                   <li key={colIndex}>
                     <button
                       onClick={() => {
-                        selectHandler(rowIndex, colIndex);
+                        playerHandler(rowIndex, colIndex);
                       }}
                     >
                       {column}
