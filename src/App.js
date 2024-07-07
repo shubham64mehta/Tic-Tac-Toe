@@ -46,7 +46,7 @@ function App() {
             management={logManagement}
           ></GameBoard>
         </div>
-        <Log></Log>
+        <Log turns={logManagement}></Log>
       </main>
     </>
   );
