@@ -1,0 +1,23 @@
+version: 0.2
+env:
+  parameter-store: # this is for getting values from AWS System Manager Parameter Store
+    DOCKER_REGISTRY_URL: /tic-tac-toe/Docker_Registry_Url
+    DOCKER_USERNAME: /tic-tac-toe/Docker_Username
+    DOCKER_PASSWORD: /tic-tac-toe/Docker_Password
+phases:
+  install:
+    runtime-versions: # techstack or lang ur application is running
+      nodejs: 18
+  pre_build:
+    commands:
+      - echo "Installing dependencies"
+      - npm install
+  build:
+    commands:
+      - echo "Building Docker Image"
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # this is for connecting to your dockerhub account
+      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_USERNAME/simple-tic-tac-toe:latest" .
+      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_USERNAME/simple-tic-tac-toe:latest"
+  post_build:
+    commands:
+      - echo "Build created successfully"
