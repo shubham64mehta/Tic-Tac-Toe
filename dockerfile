@@ -13,6 +13,12 @@ RUN npm install
 # Copy the application code into the container
 COPY . .
 
+RUN npm run build
+
+RUN npm install -g serve
+#expose the port server runs on
 EXPOSE 8000
 
-RUN npm start
+#cmd to start the application
+CMD [ "serve","-s","build","-l","8000" ]
+
