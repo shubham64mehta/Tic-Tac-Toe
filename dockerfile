@@ -13,4 +13,6 @@ RUN npm install
 # Copy the application code into the container
 COPY . .
 
+EXPOSE 8000
+
 RUN npm run build
