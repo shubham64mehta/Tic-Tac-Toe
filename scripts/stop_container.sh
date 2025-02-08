@@ -2,6 +2,15 @@
 set -e
 
 # Stop the running container (if any)
-docker ps -q --filter "name=<container_name>" | grep -q . && docker stop <container_name> && docker rm <container_name>
+#!/bin/bash
+CONTAINER_NAME="my_container"
+
+if [ -n "$(docker ps -q --filter "name=$CONTAINER_NAME")" ]; then
+    docker stop "$CONTAINER_NAME"
+    docker rm "$CONTAINER_NAME"
+else
+    echo "No running container found with name: $CONTAINER_NAME"
+fi
+
 
 # Replace <container_name> with the actual name of your container
