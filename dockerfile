@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 RUN npm install -g serve
-#expose the port server runs on
+#expose the port server running on
 EXPOSE 8000
 
 #cmd to start the application
